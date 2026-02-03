@@ -1,113 +1,124 @@
-# 🚀 Resolve.Ai
+# Resolve.Ai
 
-**AI-Powered Crisis Navigation Platform for India**
+AI-powered crisis navigation platform for Indian citizens dealing with mobile theft, bank fraud, and e-commerce disputes.
 
-> From Panic to Plan in 2 Minutes
+## Overview
 
-![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?logo=tailwindcss)
+Resolve.Ai provides step-by-step guidance for handling common crisis situations in India. Each module offers priority-based checklists, relevant official links, and AI assistance to help users navigate complex reporting and recovery processes.
 
-## 🎯 Problem Statement
+## Features
 
-When Indians face a crisis—phone theft, bank fraud, or e-commerce scams—they're overwhelmed with scattered information. Resolve.Ai provides **step-by-step, priority-based action plans** tailored for Indian users, with direct links to official portals and helplines.
+### Current Modules
 
-## ✨ Features
+- **Mobile Theft** - IMEI blocking, FIR filing, carrier lockdown procedures
+- **Bank Fraud** - UPI fraud, card fraud, phishing, SIM swap, QR code scams with RBI zero-liability guidance
+- **E-Commerce Fraud** - Non-delivery, counterfeit products, refund issues, consumer court filing
+- **Other Issues** - AI chatbot for miscellaneous crisis situations
 
-### 📱 Mobile Theft / Loss Module
-- Remote lock & wipe guidance (Find My Device)
-- SIM blocking with carrier-specific steps
-- CEIR IMEI blocking (gov.in portal)
-- e-FIR filing assistance
-- UPI & banking security checklist
+### Technical Features
 
-### 💳 UPI / Bank Fraud Module
-- RBI Zero Liability rule explained
-- 1930 Cyber Crime helpline integration
-- Bank-specific complaint processes
-- Banking Ombudsman escalation path
-- Refund tracking guidance
+- Priority-based action checklists with progress tracking
+- Sub-category selection for tailored guidance
+- Dark/Light theme toggle
+- AI chat assistant integration (Gemini API)
+- User authentication (Google, Email, Phone OTP)
+- Responsive design optimized for mobile
 
-### 📦 E-Commerce Fraud Module
-- Platform-specific complaint guides (Amazon, Flipkart, etc.)
-- National Consumer Helpline (14404)
-- e-Daakhil consumer court filing
-- Chargeback process for cards
+## Tech Stack
 
-### 🤖 AI Assistant (Other Issues)
-- Gemini-powered chatbot for unique cases
-- Handles medical, property, employment, and other crises
-- Available as floating chat on all module pages
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Styling**: CSS with glassmorphism design
+- **Backend**: Supabase (PostgreSQL, Auth, Row Level Security)
+- **AI**: Google Gemini API (planned)
+- **Payments**: Razorpay (planned)
 
-### 🌓 Dark/Light Mode
-- System preference detection
-- Persistent theme with localStorage
-- Smooth transitions
+## Getting Started
 
-## 🛠️ Tech Stack
+### Prerequisites
 
-- **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS 4 + Custom Glassmorphism
-- **AI**: Gemini API (integration ready)
-- **State**: React Hooks + Context API
+- Node.js 18+
+- npm or yarn
+- Supabase account
 
-## 🚀 Getting Started
+### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/samardpatil19-rgb/resolve-ai.git
-
-# Navigate to project
+git clone https://github.com/yourusername/resolve-ai.git
 cd resolve-ai
 
 # Install dependencies
 npm install
 
+# Set up environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your Supabase credentials
+
 # Run development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+### Environment Variables
 
-## 📁 Project Structure
+Create a `.env.local` file with the following:
 
 ```
-resolve-ai/
-├── src/
-│   ├── app/
-│   │   ├── page.tsx              # Homepage
-│   │   ├── mobile-theft/         # Mobile theft module
-│   │   ├── bank-fraud/           # Bank fraud module
-│   │   ├── ecommerce-fraud/      # E-commerce module
-│   │   ├── other-issues/         # AI chatbot module
-│   │   ├── layout.tsx            # Root layout
-│   │   └── globals.css           # Design system
-│   ├── components/
-│   │   ├── AIChatbot.tsx         # AI chat component
-│   │   └── ThemeToggle.tsx       # Theme switcher
-│   └── context/
-│       └── ThemeContext.tsx      # Theme provider
-├── public/
-└── package.json
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-## 🎨 Design Highlights
+### Database Setup
 
-- **Glassmorphism UI** with animated gradients
-- **Priority-based steps** (Critical → Urgent → Important → Follow-up)
-- **Interactive checklists** with progress tracking
-- **Direct external links** to official Indian portals
-- **Mobile-responsive** design
+Run the SQL schema in your Supabase SQL Editor:
 
-## 👥 Team
+```bash
+# Located at: supabase/schema.sql
+```
 
-Built for Hackathon 2026
+## Project Structure
 
-## 📄 License
+```
+src/
+├── app/                  # Next.js app router pages
+│   ├── bank-fraud/       # Bank fraud module
+│   ├── mobile-theft/     # Mobile theft module
+│   ├── ecommerce-fraud/  # E-commerce module
+│   ├── other-issues/     # AI chatbot module
+│   ├── login/            # Authentication page
+│   └── auth/             # OAuth callback routes
+├── components/           # Reusable React components
+├── context/              # React context providers
+├── data/                 # Module sub-categories and checklists
+└── lib/                  # Utility functions and Supabase clients
+```
 
-MIT License - feel free to use and modify!
+## Roadmap
 
----
+### Phase 1 (Current)
+- Core module implementation
+- User authentication
+- Sub-category checklists
 
-**Made with ❤️ for India**
+### Phase 2 (Planned)
+- Gemini AI integration for chat
+- Progress saving to database
+- Premium subscription tier
+
+### Phase 3 (Planned)
+- AI-generated complaint letters
+- PDF form generation
+- WhatsApp/Telegram notifications
+
+## Contributing
+
+Contributions are welcome. Please open an issue to discuss proposed changes before submitting a pull request.
+
+## License
+
+MIT License
+
+## Acknowledgements
+
+- RBI guidelines for zero-liability framework
+- National Consumer Helpline (14404)
+- Cyber Crime Portal (cybercrime.gov.in)
