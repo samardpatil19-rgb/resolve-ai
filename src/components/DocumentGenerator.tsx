@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { X, FileText, Sparkles, Copy, Download, CheckCircle2, Loader2, Lock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { X, FileText, Zap, Copy, Download, CheckCircle2, Loader2, Lock } from "lucide-react";
 
 export type DocumentType =
     | "fir-draft"
@@ -96,6 +97,17 @@ export function DocumentGenerator({
     const [copied, setCopied] = useState(false);
     const [error, setError] = useState<string>("");
 
+    // Reset state when modal opens
+    useEffect(() => {
+        if (isOpen) {
+            setGeneratedDoc("");
+            setError("");
+            setCopied(false);
+            setIsGenerating(false);
+            setFormData(contextHints || {});
+        }
+    }, [isOpen, contextHints]);
+
     if (!isOpen) return null;
 
     const fields = DOCUMENT_FIELDS[documentType] || [];
@@ -147,13 +159,13 @@ export function DocumentGenerator({
         URL.revokeObjectURL(url);
     };
 
-    return (
+    return createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Backdrop */}
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
             {/* Modal */}
-            <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto glass-card border border-border rounded-2xl">
+            <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-border rounded-2xl" style={{ background: 'var(--card-bg)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
                 {/* Header */}
                 <div className="sticky top-0 z-10 bg-background/90 backdrop-blur-xl border-b border-border p-6 rounded-t-2xl">
                     <div className="flex items-center justify-between">
@@ -241,7 +253,7 @@ export function DocumentGenerator({
                                     </>
                                 ) : (
                                     <>
-                                        <Sparkles className="w-4 h-4" />
+                                        <Zap className="w-4 h-4" />
                                         Generate {DOCUMENT_TITLES[documentType]}
                                     </>
                                 )}
@@ -299,7 +311,8 @@ export function DocumentGenerator({
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
 
@@ -316,7 +329,7 @@ export function GenerateDocButton({
             onClick={(e) => { e.stopPropagation(); onClick(); }}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-foreground text-background hover:opacity-90 transition-opacity duration-150"
         >
-            <Sparkles className="w-3 h-3 flex-shrink-0" />
+            <Zap className="w-3 h-3 flex-shrink-0" />
             <span>{label}</span>
         </button>
     );

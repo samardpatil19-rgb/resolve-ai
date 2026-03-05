@@ -24,7 +24,7 @@ export default function PrivacyPage() {
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">
                         Privacy Policy
                     </h1>
-                    <p className="text-secondary mb-8">Last updated: February 2, 2026</p>
+                    <p className="text-secondary mb-8">Last updated: March 5, 2026</p>
 
                     <div className="prose prose-invert max-w-none space-y-8 text-secondary">
                         <section>
@@ -51,21 +51,35 @@ export default function PrivacyPage() {
                         <section>
                             <h2 className="text-2xl font-bold text-foreground mb-4">4. AI Processing</h2>
                             <p>
-                                Data submitted to our AI tools (Gemini) is processed for the sole purpose of generating your requested outputs. Please refer to Google&apos;s data processing terms for more details on the underlying infrastructure.
+                                Data submitted to our AI tools (Groq) is processed for the sole purpose of generating your requested outputs. Your data is not stored or used for training.
                             </p>
                         </section>
 
                         <section>
                             <h2 className="text-2xl font-bold text-foreground mb-4">5. Your Rights</h2>
                             <p>
-                                You have the right to access, correct, or delete your personal data at any time. Contact us at privacy@resolve.ai to exercise these rights.
+                                You have the right to access, correct, or delete your personal data at any time. Contact us at gamingvalorant838@gmail.com to exercise these rights.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-bold text-foreground mb-4">6. Contact Us</h2>
+                            <h2 className="text-2xl font-bold text-foreground mb-4">6. Cookies & Local Storage</h2>
                             <p>
-                                For any privacy-related questions, please reach out to us at <a href="mailto:privacy@resolve.ai" className="text-primary underline">privacy@resolve.ai</a>.
+                                Resolve.Ai uses cookies and local storage to save your theme preferences and track your progress through crisis resolution steps. We do not use tracking cookies for advertising purposes.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-bold text-foreground mb-4">7. Third-Party Services</h2>
+                            <p>
+                                We use the following third-party services: Supabase (authentication & database), Groq (AI processing), and Vercel (hosting). Each service has its own privacy policy that governs how they handle data.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-bold text-foreground mb-4">8. Contact Us</h2>
+                            <p>
+                                For any privacy-related questions, please reach out to us at <a href="mailto:gamingvalorant838@gmail.com" className="text-primary underline">gamingvalorant838@gmail.com</a>.
                             </p>
                         </section>
                     </div>

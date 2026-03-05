@@ -121,7 +121,7 @@ export default function ProtocolsPage() {
                                 <div>
                                     <h3 className="text-xl font-bold text-foreground mb-2">AI Assistance Disclaimer</h3>
                                     <p className="text-secondary leading-relaxed">
-                                        Resolve.Ai uses AI (Google Gemini) to help draft documents and provide contextual assistance. While we strive for accuracy, AI-generated content should be reviewed by the user. For complex legal matters, always consult a qualified professional.
+                                        Resolve.Ai uses AI (Groq - Llama 3.3) to help draft documents and provide contextual assistance. While we strive for accuracy, AI-generated content should be reviewed by the user. For complex legal matters, always consult a qualified professional.
                                     </p>
                                 </div>
                             </div>

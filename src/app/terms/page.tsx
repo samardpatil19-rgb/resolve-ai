@@ -24,7 +24,7 @@ export default function TermsPage() {
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">
                         Terms of Service
                     </h1>
-                    <p className="text-secondary mb-8">Last updated: February 2, 2026</p>
+                    <p className="text-secondary mb-8">Last updated: March 5, 2026</p>
 
                     <div className="prose prose-invert max-w-none space-y-8 text-secondary">
                         <section>
@@ -63,16 +63,30 @@ export default function TermsPage() {
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-bold text-foreground mb-4">6. Changes to Terms</h2>
+                            <h2 className="text-2xl font-bold text-foreground mb-4">6. Limitation of Liability</h2>
                             <p>
-                                We may update these terms from time to time. Continued use of the service after changes constitutes acceptance of the new terms.
+                                Resolve.Ai and its team shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use of our services, including but not limited to reliance on AI-generated documents or guidance. Maximum liability is limited to the amount paid by you for the service.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-bold text-foreground mb-4">7. Contact</h2>
+                            <h2 className="text-2xl font-bold text-foreground mb-4">7. Governing Law</h2>
                             <p>
-                                For questions about these terms, contact us at <a href="mailto:legal@resolve.ai" className="text-primary underline">legal@resolve.ai</a>.
+                                These terms shall be governed by and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in India.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-bold text-foreground mb-4">8. Changes to Terms</h2>
+                            <p>
+                                We may update these terms from time to time. Continued use of the service after changes constitutes acceptance of the new terms. We will notify users of significant changes via email or in-app notification.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-bold text-foreground mb-4">9. Contact</h2>
+                            <p>
+                                For questions about these terms, contact us at <a href="mailto:gamingvalorant838@gmail.com" className="text-primary underline">gamingvalorant838@gmail.com</a>.
                             </p>
                         </section>
                     </div>

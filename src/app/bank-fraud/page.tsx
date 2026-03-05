@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { FloatingChatButton, ChatDrawer } from "@/components/AIChatbot";
 import { DocumentGenerator, GenerateDocButton, type DocumentType } from "@/components/DocumentGenerator";
 import { bankFraudSubCategories, type SubCategory, type Step } from "@/data/bank-fraud-subcategories";
-import { Smartphone, CreditCard, Fish, Radio, QrCode, FileText, Sparkles, Bell, type LucideIcon } from "lucide-react";
+import { Smartphone, CreditCard, Fish, Radio, QrCode, FileText, Zap, Bell, type LucideIcon } from "lucide-react";
 
 // Icon mapping for subcategories
 const subcategoryIcons: Record<string, LucideIcon> = {
@@ -106,43 +106,58 @@ function RBILiabilityInfo() {
     );
 }
 
-// AI Complaint Generator Placeholder
+// AI Complaint Generator - Real Implementation
 function ComplaintGenerator() {
+    const [showGenerator, setShowGenerator] = useState(false);
     return (
-        <div className="glass-card p-6 mb-8 border border-border/50 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-50">
-                <Sparkles className="w-24 h-24 text-foreground/5 group-hover:text-foreground/10 transition-colors" />
-            </div>
-
-            <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-background" />
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-bold text-foreground">AI Complaint Drafter</h3>
-                        <p className="text-xs text-secondary">Pro Feature</p>
-                    </div>
+        <>
+            <div className="glass-card p-6 mb-8 border border-border/50 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-50">
+                    <Zap className="w-24 h-24 text-foreground/5 group-hover:text-foreground/10 transition-colors" />
                 </div>
 
-                <p className="text-secondary text-sm mb-6 max-w-lg">
-                    Instantly generate a professional complaint letter for your bank or the police.
-                    Our AI formats it perfectly with all necessary legal details.
-                </p>
+                <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-background" />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-foreground">AI Complaint Drafter</h3>
+                            <p className="text-xs text-secondary">Powered by Groq AI</p>
+                        </div>
+                    </div>
 
-                <div className="bg-surface rounded-lg p-4 mb-6 border border-border/50 font-mono text-xs text-muted">
-                    <p className="mb-2">To: The Branch Manager...</p>
-                    <p className="mb-2">Subject: Unauthorized Transaction Report...</p>
-                    <p>Referencing RBI Circular DBR.No.Leg.BC.78/09.07.005...</p>
-                    <div className="mt-2 h-2 w-20 bg-border/50 rounded animate-pulse"></div>
+                    <p className="text-secondary text-sm mb-6 max-w-lg">
+                        Instantly generate a professional complaint letter for your bank or the police.
+                        Our AI formats it perfectly with all necessary legal details.
+                    </p>
+
+                    <div className="bg-surface rounded-lg p-4 mb-6 border border-border/50 font-mono text-xs text-muted">
+                        <p className="mb-2">To: The Branch Manager...</p>
+                        <p className="mb-2">Subject: Unauthorized Transaction Report...</p>
+                        <p>Referencing RBI Circular DBR.No.Leg.BC.78/09.07.005...</p>
+                        <div className="mt-2 h-2 w-20 bg-border/50 rounded animate-pulse"></div>
+                    </div>
+
+                    <button
+                        onClick={() => setShowGenerator(true)}
+                        className="btn-primary w-full flex items-center justify-center gap-2"
+                    >
+                        <Zap className="w-4 h-4" />
+                        Generate Draft
+                    </button>
                 </div>
-
-                <button className="btn-primary w-full flex items-center justify-center gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    Generate Draft
-                </button>
             </div>
-        </div>
+
+            <DocumentGenerator
+                isOpen={showGenerator}
+                onClose={() => setShowGenerator(false)}
+                documentType="complaint-letter"
+                title="Bank Complaint Letter"
+                description="AI-powered complaint letter generator for bank fraud"
+                isPremium={true}
+            />
+        </>
     );
 }
 

@@ -1,7 +1,9 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 import { NextRequest, NextResponse } from "next/server";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY,
+});
 
 const DOCUMENT_PROMPTS: Record<string, string> = {
     "fir-draft": `Generate a formal First Information Report (FIR) complaint letter for filing with Indian police. 
@@ -76,9 +78,9 @@ export async function POST(request: NextRequest) {
     try {
         const { type, context, userInputs } = await request.json();
 
-        if (!process.env.GEMINI_API_KEY) {
+        if (!process.env.GROQ_API_KEY) {
             return NextResponse.json(
-                { error: "Gemini API key not configured" },
+                { error: "Groq API key not configured. Please add GROQ_API_KEY to .env.local" },
                 { status: 500 }
             );
         }
@@ -91,11 +93,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash",
-            systemInstruction: `You are a professional legal document generator for Indian citizens dealing with crisis situations. Generate well-formatted, legally sound documents that can be directly used by the person. Use placeholder brackets [YOUR NAME], [DATE], etc. for information not provided. Always include relevant Indian legal references. Output clean text without markdown code blocks.`,
-        });
-
         const prompt = `${documentPrompt}
 
 User's situation details:
@@ -105,12 +102,36 @@ Additional context: ${context || "None provided"}
 
 Generate the complete document now. Make it ready to use with proper formatting. Fill in all details from the user input and use [PLACEHOLDER] for anything not provided.`;
 
-        const result = await model.generateContent(prompt);
-        const document = result.response.text();
+        const chatCompletion = await groq.chat.completions.create({
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a professional legal document generator for Indian citizens dealing with crisis situations. Generate well-formatted, legally sound documents that can be directly used by the person. Use placeholder brackets [YOUR NAME], [DATE], etc. for information not provided. Always include relevant Indian legal references. Output clean text without markdown code blocks."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
+            model: "llama-3.3-70b-versatile",
+            temperature: 0.4,
+            max_tokens: 2048,
+        });
+
+        const document = chatCompletion.choices[0]?.message?.content || "";
 
         return NextResponse.json({ document });
-    } catch (error) {
-        console.error("Document generation error:", error);
+    } catch (error: unknown) {
+        const err = error as { status?: number; message?: string };
+        console.error("Document generation error:", err.message || error);
+
+        if (err.status === 429) {
+            return NextResponse.json(
+                { error: "AI rate limit reached. Please wait a moment and try again." },
+                { status: 429 }
+            );
+        }
+
         return NextResponse.json(
             { error: "Failed to generate document. Please try again." },
             { status: 500 }

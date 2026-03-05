@@ -128,8 +128,8 @@ export default function ContactPage() {
                         <div className="glass-card p-6 text-center">
                             <Mail className="w-8 h-8 mx-auto mb-3 text-primary" />
                             <h3 className="font-bold mb-2">Email Us</h3>
-                            <a href="mailto:support@resolve.ai" className="text-secondary hover:text-foreground transition-colors">
-                                support@resolve.ai
+                            <a href="mailto:gamingvalorant838@gmail.com" className="text-secondary hover:text-foreground transition-colors">
+                                gamingvalorant838@gmail.com
                             </a>
                         </div>
                         <div className="glass-card p-6 text-center">

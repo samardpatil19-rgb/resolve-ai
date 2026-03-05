@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/context/AuthContext";
-import { Smartphone, CreditCard, ShoppingBag, Zap, Bot, MapPin, Sparkles, HelpCircle, Stethoscope, Car, Plane, Wifi, Target, Clock, CheckCircle2, Check, User, LogOut } from "lucide-react";
+import { Smartphone, CreditCard, ShoppingBag, Zap, Bot, MapPin, HelpCircle, Stethoscope, Car, Plane, Wifi, Target, Clock, CheckCircle2, Check, User, LogOut } from "lucide-react";
 
 // Crisis Module Card Component
 function CrisisCard({
@@ -117,7 +117,7 @@ function StatsSection() {
     { value: "2 min", label: "Time to First Action", Icon: Zap },
     { value: "24/7", label: "AI Assistance", Icon: Bot },
     { value: "100%", label: "India-Specific", Icon: MapPin },
-    { value: "Free", label: "Core Features", Icon: Sparkles },
+    { value: "Free", label: "Core Features", Icon: Check },
   ];
 
   return (
@@ -485,7 +485,7 @@ export default function Home() {
             </div>
 
             <div className="text-muted text-sm">
-              Made for India | © 2025 Resolve.Ai
+              Made for India | © 2026 Resolve.Ai
             </div>
 
             <div className="flex items-center gap-6 text-secondary text-sm">

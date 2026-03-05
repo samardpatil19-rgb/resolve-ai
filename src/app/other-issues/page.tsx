@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AIChatbot } from "@/components/AIChatbot";
 
@@ -14,6 +15,8 @@ const quickPrompts = [
 ];
 
 export default function OtherIssuesPage() {
+    const [selectedPrompt, setSelectedPrompt] = useState<string>("");
+
     return (
         <div className="min-h-screen flex flex-col">
             <div className="gradient-bg" />
@@ -65,7 +68,11 @@ export default function OtherIssuesPage() {
                             {quickPrompts.map((prompt) => (
                                 <button
                                     key={prompt.label}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface border border-border text-xs text-secondary hover:text-foreground hover:border-border-hover transition-all"
+                                    onClick={() => setSelectedPrompt(prompt.prompt)}
+                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface border text-xs transition-all cursor-pointer ${selectedPrompt === prompt.prompt
+                                            ? 'border-foreground text-foreground'
+                                            : 'border-border text-secondary hover:text-foreground hover:border-border-hover'
+                                        }`}
                                 >
                                     <span>{prompt.icon}</span>
                                     <span>{prompt.label}</span>
@@ -77,6 +84,8 @@ export default function OtherIssuesPage() {
                     {/* Chat Interface */}
                     <div className="flex-1 glass-card overflow-hidden min-h-[400px]">
                         <AIChatbot
+                            moduleContext="other-issues"
+                            quickPrompt={selectedPrompt}
                             welcomeMessage="Hi! I'm your AI crisis assistant. I can help you navigate various challenging situations that may not fit into our main categories.
 
 Whether it's a medical emergency, property dispute, employment issue, or any other crisis - describe your situation, and I'll provide step-by-step guidance on how to resolve it.

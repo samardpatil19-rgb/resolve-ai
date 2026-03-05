@@ -13,12 +13,52 @@ interface AIChatbotProps {
     moduleContext?: string; // e.g., "mobile-theft", "bank-fraud", etc.
     placeholder?: string;
     welcomeMessage?: string;
+    quickPrompt?: string; // Auto-send this message when set
+}
+
+function formatMarkdown(text: string): string {
+    // 1. Escape HTML entities to prevent XSS and broken rendering
+    let html = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+    // 2. Handle inline code (backticks) — preserve content inside
+    html = html.replace(/`([^`]+)`/g, '<code class="bg-surface px-1.5 py-0.5 rounded text-xs">$1</code>');
+
+    // 3. Headings (must come before bold since ### starts lines)
+    html = html.replace(/^### (.*$)/gm, '<h4 class="font-semibold mt-3 mb-1">$1</h4>');
+    html = html.replace(/^## (.*$)/gm, '<h3 class="font-semibold text-base mt-3 mb-1">$1</h3>');
+
+    // 4. Bold and italic (non-greedy, process bold first to avoid conflict)
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '<em>$1</em>');
+
+    // 5. List items
+    html = html.replace(/^[-•] (.*$)/gm, '<li class="ml-4 list-disc">$1</li>');
+    html = html.replace(/^\d+\. (.*$)/gm, '<li class="ml-4 list-decimal">$1</li>');
+
+    // 6. Wrap consecutive <li> elements in <ul> or <ol>
+    html = html.replace(/((?:<li class="ml-4 list-disc">.*<\/li>\n?)+)/g, '<ul class="my-1">$1</ul>');
+    html = html.replace(/((?:<li class="ml-4 list-decimal">.*<\/li>\n?)+)/g, '<ol class="my-1">$1</ol>');
+
+    // 7. Line breaks (but not after block elements)
+    html = html.replace(/\n/g, '<br/>');
+
+    // 8. Clean up excessive <br/> after block elements
+    html = html.replace(/(<\/h[34]>)<br\/>/g, '$1');
+    html = html.replace(/(<\/ul>)<br\/>/g, '$1');
+    html = html.replace(/(<\/ol>)<br\/>/g, '$1');
+    html = html.replace(/(<\/li>)<br\/>/g, '$1');
+
+    return html;
 }
 
 export function AIChatbot({
     moduleContext,
     placeholder = "Describe your issue in detail...",
-    welcomeMessage = "Hi! I'm your AI assistant. Tell me about your situation and I'll help you find the best solution."
+    welcomeMessage = "Hi! I'm your AI assistant. Tell me about your situation and I'll help you find the best solution.",
+    quickPrompt
 }: AIChatbotProps) {
     const [messages, setMessages] = useState<Message[]>([
         {
@@ -41,11 +81,26 @@ export function AIChatbot({
         scrollToBottom();
     }, [messages]);
 
+    // Auto-send quick prompt when set
+    useEffect(() => {
+        if (quickPrompt && messages.length === 1) {
+            const userMessage: Message = {
+                id: Date.now().toString(),
+                role: "user",
+                content: quickPrompt,
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, userMessage]);
+            getAIResponse(quickPrompt, [messages[0], userMessage]);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [quickPrompt]);
+
     const getAIResponse = async (userMessage: string, allMessages: Message[]) => {
         setIsTyping(true);
 
         try {
-            // Build message history for Gemini (exclude welcome message)
+            // Build message history for Groq (exclude welcome message)
             const chatMessages = allMessages
                 .filter(m => m.id !== "welcome")
                 .map(m => ({ role: m.role, content: m.content }));
@@ -139,16 +194,8 @@ export function AIChatbot({
                             <div className="text-sm leading-relaxed prose-chat"
                                 dangerouslySetInnerHTML={{
                                     __html: message.role === "assistant"
-                                        ? message.content
-                                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                            .replace(/^### (.*$)/gm, '<h4 class="font-semibold mt-3 mb-1">$1</h4>')
-                                            .replace(/^## (.*$)/gm, '<h3 class="font-semibold text-base mt-3 mb-1">$1</h3>')
-                                            .replace(/^- (.*$)/gm, '<li class="ml-4 list-disc">$1</li>')
-                                            .replace(/^• (.*$)/gm, '<li class="ml-4 list-disc">$1</li>')
-                                            .replace(/^\d+\. (.*$)/gm, '<li class="ml-4 list-decimal">$1</li>')
-                                            .replace(/\n/g, '<br/>')
-                                        : message.content.replace(/\n/g, '<br/>')
+                                        ? formatMarkdown(message.content)
+                                        : message.content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>')
                                 }}
                             />
                             <div className={`text-xs mt-2 ${message.role === "user" ? "text-background/60" : "text-muted"}`}>
@@ -206,7 +253,7 @@ export function AIChatbot({
                     </button>
                 </form>
                 <p className="text-xs text-muted mt-2 text-center">
-                    Powered by Gemini AI • Your data is secure and private
+                    Powered by Groq AI • Your data is secure and private
                 </p>
             </div>
         </div>
@@ -255,7 +302,7 @@ export function ChatDrawer({ isOpen, onClose, moduleContext, welcomeMessage }: {
                         </div>
                         <div>
                             <h3 className="font-semibold text-foreground">AI Assistant</h3>
-                            <p className="text-xs text-muted">Powered by Gemini</p>
+                            <p className="text-xs text-muted">Powered by Groq</p>
                         </div>
                     </div>
                     <button
