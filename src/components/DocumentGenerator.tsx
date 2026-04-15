@@ -147,16 +147,54 @@ export function DocumentGenerator({
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const handleDownload = () => {
-        const blob = new Blob([generatedDoc], { type: "text/plain" });
+    const handleDownloadWord = () => {
+        const titleText = DOCUMENT_TITLES[documentType] || "Document";
+        const content = generatedDoc.replace(/\n/g, '<br/>');
+        const html = `<html xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+            <head><meta charset="utf-8"><title>${titleText}</title></head>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6;"><div>${content}</div></body>
+        </html>`;
+        const blob = new Blob(['\ufeff' + html], { type: "application/msword" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${DOCUMENT_TITLES[documentType] || "document"}.txt`;
+        a.download = `${titleText.replace(/\s+/g, "_")}.doc`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    };
+
+    const handleDownloadPDF = () => {
+        const titleText = DOCUMENT_TITLES[documentType] || "Document";
+        const printWindow = window.open('', '', 'height=800,width=800');
+        if (!printWindow) {
+            alert("Please allow pop-ups to generate the PDF.");
+            return;
+        }
+        const content = generatedDoc.replace(/\n/g, '<br/>');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>${titleText}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 40px; margin: 0; color: black; }
+                        @media print {
+                            @page { margin: 2cm; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 500);
     };
 
     return createPortal(
@@ -276,11 +314,18 @@ export function DocumentGenerator({
                                         {copied ? "Copied!" : "Copy"}
                                     </button>
                                     <button
-                                        onClick={handleDownload}
+                                        onClick={handleDownloadPDF}
+                                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-border hover:bg-surface transition-colors text-secondary hover:text-foreground"
+                                    >
+                                        <FileText className="w-3.5 h-3.5" />
+                                        Save as PDF
+                                    </button>
+                                    <button
+                                        onClick={handleDownloadWord}
                                         className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-border hover:bg-surface transition-colors text-secondary hover:text-foreground"
                                     >
                                         <Download className="w-3.5 h-3.5" />
-                                        Download
+                                        Save as Word
                                     </button>
                                 </div>
                             </div>
