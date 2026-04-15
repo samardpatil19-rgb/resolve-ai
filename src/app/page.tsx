@@ -436,7 +436,7 @@ export default function Home() {
                 ))}
               </ul>
 
-              <button className="btn-secondary w-full">Get Started Free</button>
+              <Link href="/login" className="btn-secondary w-full block text-center">Get Started Free</Link>
             </div>
 
             {/* Premium Tier */}
@@ -467,7 +467,7 @@ export default function Home() {
                 ))}
               </ul>
 
-              <button className="btn-primary w-full">Upgrade to Pro</button>
+              <Link href="/pro" className="btn-primary w-full block text-center">Upgrade to Pro</Link>
             </div>
           </div>
         </div>
