@@ -1,5 +1,7 @@
 # Resolve.Ai ⚡
 
+**🟢 Live Demo:** [resolve-ai-eta.vercel.app](https://resolve-ai-eta.vercel.app/)
+
 **AI-powered crisis navigation platform for Indian citizens.** From panic to plan in 2 minutes — get step-by-step guidance for mobile theft, bank fraud, e-commerce disputes, and more.
 
 ![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat&logo=next.js)
