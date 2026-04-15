@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { FloatingChatButton, ChatDrawer } from "@/components/AIChatbot";
 import { DocumentGenerator, GenerateDocButton, type DocumentType } from "@/components/DocumentGenerator";
@@ -56,6 +58,16 @@ function StepCard({
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showGenerator, setShowGenerator] = useState(false);
+    const { isPremium } = useAuth();
+    const router = useRouter();
+
+    const handleGenerateClick = () => {
+        if (!isPremium) {
+            router.push('/pro');
+            return;
+        }
+        setShowGenerator(true);
+    };
 
     return (
         <div className={`glass-card p-6 transition-all ${isCompleted ? 'opacity-60' : ''}`}>
@@ -94,7 +106,7 @@ function StepCard({
                         {generatorType && (
                             <GenerateDocButton
                                 label={`Generate ${generatorTitle || 'Draft'}`}
-                                onClick={() => setShowGenerator(true)}
+                                onClick={handleGenerateClick}
                             />
                         )}
                     </div>
@@ -753,7 +765,7 @@ export default function MobileTheftPage() {
             </main>
 
             {/* AI Chat */}
-            <FloatingChatButton onClick={() => setIsChatOpen(true)} />
+            <FloatingChatButton onClick={() => setIsChatOpen(true)} requiresPremium={true} />
             <ChatDrawer
                 isOpen={isChatOpen}
                 onClose={() => setIsChatOpen(false)}

@@ -16,6 +16,7 @@ interface AuthContextType {
     verifyOTP: (phone: string, token: string) => Promise<{ error: Error | null }>;
     signOut: () => Promise<void>;
     isPremium: boolean;
+    refreshPremium: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -142,6 +143,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsPremium(false);
     };
 
+    const refreshPremium = async () => {
+        if (!supabase || !user) return;
+        const { data } = await supabase
+            .from('profiles')
+            .select('is_premium, premium_expires_at')
+            .eq('id', user.id)
+            .single();
+        if (data) {
+            const isActive = data.is_premium &&
+                (!data.premium_expires_at || new Date(data.premium_expires_at) > new Date());
+            setIsPremium(isActive);
+        }
+    };
+
     return (
         <AuthContext.Provider
             value={{
@@ -156,6 +171,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 verifyOTP,
                 signOut,
                 isPremium,
+                refreshPremium,
             }}
         >
             {children}

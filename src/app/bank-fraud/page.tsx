@@ -169,6 +169,16 @@ function StepCard({ step, isCompleted, onToggle }: {
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showGenerator, setShowGenerator] = useState(false);
+    const { isPremium } = useAuth();
+    const router = useRouter();
+
+    const handleGenerateClick = () => {
+        if (!isPremium) {
+            router.push('/pro');
+            return;
+        }
+        setShowGenerator(true);
+    };
 
     return (
         <div className={`glass-card p-6 transition-all ${isCompleted ? 'opacity-60' : ''}`}>
@@ -207,7 +217,7 @@ function StepCard({ step, isCompleted, onToggle }: {
                         {step.generatorType && (
                             <GenerateDocButton
                                 label={`Generate ${step.generatorTitle || 'Draft'}`}
-                                onClick={() => setShowGenerator(true)}
+                                onClick={handleGenerateClick}
                             />
                         )}
                     </div>
@@ -419,7 +429,7 @@ export default function BankFraudPage() {
             </main>
 
             {/* AI Chat */}
-            <FloatingChatButton onClick={() => setIsChatOpen(true)} />
+            <FloatingChatButton onClick={() => setIsChatOpen(true)} requiresPremium={true} />
             <ChatDrawer
                 isOpen={isChatOpen}
                 onClose={() => setIsChatOpen(false)}

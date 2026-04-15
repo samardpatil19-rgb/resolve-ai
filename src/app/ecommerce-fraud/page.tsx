@@ -356,7 +356,7 @@ export default function EcommerceFraudPage() {
             </main>
 
             {/* AI Chat */}
-            <FloatingChatButton onClick={() => setIsChatOpen(true)} />
+            <FloatingChatButton onClick={() => setIsChatOpen(true)} requiresPremium={true} />
             <ChatDrawer
                 isOpen={isChatOpen}
                 onClose={() => setIsChatOpen(false)}

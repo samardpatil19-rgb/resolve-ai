@@ -325,8 +325,20 @@ export function GenerateDocButton({
     onClick: () => void;
 }) {
     return (
+        <GenerateDocButtonInner label={label} onClick={onClick} />
+    );
+}
+
+function GenerateDocButtonInner({ label, onClick }: { label: string; onClick: () => void }) {
+    // Lazy import to avoid circular deps - premium check happens at click time
+    const handleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onClick();
+    };
+
+    return (
         <button
-            onClick={(e) => { e.stopPropagation(); onClick(); }}
+            onClick={handleClick}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-foreground text-background hover:opacity-90 transition-opacity duration-150"
         >
             <Zap className="w-3 h-3 flex-shrink-0" />
@@ -334,3 +346,4 @@ export function GenerateDocButton({
         </button>
     );
 }
+
