@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { FloatingChatButton, ChatDrawer } from "@/components/AIChatbot";
 import { DocumentGenerator, GenerateDocButton, type DocumentType } from "@/components/DocumentGenerator";
